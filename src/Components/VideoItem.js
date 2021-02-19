@@ -1,9 +1,9 @@
 import React from 'react';
 
-const VideoItem = ({ id, video, onVideoClick }) => {
+const VideoItem = ({ video, onVideoClick }) => {
   return (
     <>
-      <div className='item' onClick={() => onVideoClick(id)}>
+      <div className='item video-item' onClick={() => onVideoClick(video)}>
         <div className='ui tiny image'>
           <img
             src={video.snippet.thumbnails.default.url}
@@ -20,7 +20,6 @@ const VideoItem = ({ id, video, onVideoClick }) => {
           </div>
         </div>
       </div>
-      <div className='ui section divider'></div>
     </>
   );
 };

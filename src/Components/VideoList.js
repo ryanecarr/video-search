@@ -12,7 +12,7 @@ const VideoList = ({ videos, onVideoClick }) => {
       />
     );
   });
-  return <div className='ui stackable items'>{list}</div>;
+  return <div className='ui divided stackable items'>{list}</div>;
 };
 
 export default VideoList;

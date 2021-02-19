@@ -10,7 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       videos: [],
-      currentVideoId: null,
+      selectedVideo: null,
       loading: false,
     };
   }
@@ -25,14 +25,13 @@ class App extends Component {
 
     this.setState({
       videos: response.data.items,
-      loading: false,
+      loading: false, 
     });
   };
 
-  onVideoClick = (id) => {
-    console.log('clicked a video');
+  onVideoClick = (video) => {
     this.setState({
-      currentVideoId: id,
+      selectedVideo: video,
     });
   };
 
@@ -45,14 +44,12 @@ class App extends Component {
             onSearchSubmit={this.onSearchSubmit}
           />
         </div>
-        <div
-          className='ten wide column'
-          style={{
-            visibility:
-              this.state.currentVideoId === null ? 'hidden' : 'visible',
-          }}
-        >
-          <VideoDetail id={this.state.currentVideoId} />
+        <div className='ten wide column'>
+          {this.state.selectedVideo != null ? (
+            <VideoDetail video={this.state.selectedVideo} />
+          ) : (
+            <h1>YouTube Video Search</h1>
+          )}
         </div>
         <div className='six wide column'>
           <VideoList
