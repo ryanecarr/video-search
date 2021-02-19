@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import youtube from './API/YouTube';
 import SearchBar from './Components/SearchBar.js';
 import VideoList from './Components/VideoList';
 import VideoDetail from './Components/VideoDetail';
+import SuggestedTags from './Components/SuggestedTags';
+import seedData from './seedData';
 import './App.css';
-import youtube from './API/YouTube';
 
 class App extends Component {
   constructor(props) {
@@ -25,7 +27,8 @@ class App extends Component {
 
     this.setState({
       videos: response.data.items,
-      loading: false, 
+      selectedVideo: null,
+      loading: false,
     });
   };
 
@@ -34,6 +37,12 @@ class App extends Component {
       selectedVideo: video,
     });
   };
+
+  componentDidMount() {
+    this.onSearchSubmit(
+      seedData[Math.floor(Math.random() * seedData.length + 1)]
+    );
+  }
 
   render() {
     return (
@@ -44,14 +53,17 @@ class App extends Component {
             onSearchSubmit={this.onSearchSubmit}
           />
         </div>
-        <div className='ten wide column'>
+        <div className='sixteen wide column'>
+          <SuggestedTags tags={seedData} />
+        </div>
+        <div className='eleven wide column'>
           {this.state.selectedVideo != null ? (
             <VideoDetail video={this.state.selectedVideo} />
           ) : (
-            <h1>YouTube Video Search</h1>
+            <i className='huge youtube icon'></i>
           )}
         </div>
-        <div className='six wide column'>
+        <div className='five wide column'>
           <VideoList
             videos={this.state.videos}
             onVideoClick={this.onVideoClick}

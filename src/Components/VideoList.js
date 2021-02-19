@@ -6,7 +6,6 @@ const VideoList = ({ videos, onVideoClick }) => {
     return (
       <VideoItem
         key={video.id.videoId}
-        id={video.id.videoId}
         video={video}
         onVideoClick={onVideoClick}
       />

@@ -4,7 +4,7 @@ const VideoDetail = ({ video }) => {
   return (
     <div>
       <iframe
-        title='player'
+        title='video player'
         id='ytplayer'
         type='text/html'
         src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1`}

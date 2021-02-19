@@ -1,0 +1,17 @@
+export default [
+  'ben awad',
+  'techlead',
+  'reactjs',
+  'nodejs',
+  'html5',
+  'bootstrap5',
+  'mongodb',
+  'scott hanselman',
+  'netlify',
+  'traversymedia',
+  'joma tech',
+  'javascript',
+  'css3',
+  'vscode',
+  'colt steele',
+];
