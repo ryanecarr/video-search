@@ -11,7 +11,15 @@ const VideoList = ({ videos, onVideoClick }) => {
       />
     );
   });
-  return <div className='ui divided stackable items'>{list}</div>;
+  return (
+    <>
+      {videos.length ? (
+        <div className='ui divided stackable items'>{list}</div>
+      ) : (
+        <div className='ui active centered inline loader'></div>
+      )}
+    </>
+  );
 };
 
 export default VideoList;
