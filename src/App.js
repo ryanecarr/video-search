@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import youtube from './API/YouTube';
 import SearchBar from './Components/SearchBar.js';
 import VideoList from './Components/VideoList';
@@ -8,19 +8,14 @@ import Error from './Components/Error';
 import seedData from './seedData';
 import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      videos: [],
-      selectedVideo: null,
-      loading: false,
-      error: null,
-    };
-  }
+const App = () => {
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  onSearchSubmit = async (term) => {
-    this.setState({ loading: true });
+  const onSearchSubmit = async (term) => {
+    setLoading(true);
     return await youtube
       .get('/search', {
         params: {
@@ -28,63 +23,43 @@ class App extends Component {
         },
       })
       .then((response) => {
-        this.setState({
-          videos: response.data.items,
-          selectedVideo: response.data.items[0],
-          loading: false,
-        });
+        setVideos(response.data.items);
+        setSelectedVideo(response.data.items[0]);
+        setLoading(false);
       })
       .catch((error) => {
-        this.setState({
-          error: `${error}`,
-        });
+        setError(`${error}`);
       });
   };
 
-  onVideoClick = (video) => {
-    this.setState({
-      selectedVideo: video,
-    });
-  };
+  useEffect(() => {
+    onSearchSubmit(seedData[Math.floor(Math.random() * seedData.length + 1)]);
+  }, []);
 
-  componentDidMount() {
-    this.onSearchSubmit(
-      seedData[Math.floor(Math.random() * seedData.length + 1)]
-    );
-  }
-
-  render() {
-    return (
-      <div className='ui grid container main'>
-        {this.state.error != null ? (
-          <div className='sixteen wide column'>
-            <Error error={this.state.error} />
+  return (
+    <div className='ui grid container main'>
+      {error != null ? (
+        <div className='sixteen wide column'>
+          <Error error={error} />
+        </div>
+      ) : (
+        <>
+          <div className='seven wide column centered'>
+            <SearchBar loading={loading} onSearchSubmit={onSearchSubmit} />
           </div>
-        ) : (
-          <>
-            <div className='seven wide column centered'>
-              <SearchBar
-                loading={this.state.loading}
-                onSearchSubmit={this.onSearchSubmit}
-              />
-            </div>
-            <div className='sixteen wide column'>
-              <SuggestedTags tags={seedData} onTagClick={this.onSearchSubmit} />
-            </div>
-            <div className='eleven wide column'>
-              <VideoDetail video={this.state.selectedVideo} />
-            </div>
-            <div className='five wide column'>
-              <VideoList
-                videos={this.state.videos}
-                onVideoClick={this.onVideoClick}
-              />
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
-}
+          <div className='sixteen wide column'>
+            <SuggestedTags tags={seedData} onTagClick={onSearchSubmit} />
+          </div>
+          <div className='eleven wide column'>
+            <VideoDetail video={selectedVideo} />
+          </div>
+          <div className='five wide column'>
+            <VideoList videos={videos} onVideoClick={setSelectedVideo} />
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default App;
